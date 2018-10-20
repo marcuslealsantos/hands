@@ -1,0 +1,12 @@
+*~
+*.pyc
+*.DS_Store
+*.log
+*.tmp*
+*.swp*
+.project
+.settings
+.pydevproject
+media/*
+.vscode
+.env
