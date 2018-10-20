@@ -23,9 +23,6 @@
 
     <!-- Custom styles for this template-->
     <link href="{% static 'css/sb-admin.css' %}" rel="stylesheet">
-    
-   
-    
 
   </head>
 
@@ -125,22 +122,99 @@
               Days Of Weeks
             </div>
             <div class="card-body">
+              <div id="dayPeriods">
+                <script>
+                  var dayPeriodsCategories = []
+                  var dayPeriodsSeries = []
+                    
+                  {% for key, val in infos.items %}
+                      {% if val.count_visits > 100 %}
+                      dayPeriodsCategories.push('{{key}}')
+                      {% endif %}
+                  {% endfor %}
+                  
+                  {% for item in series_day_periods %}
+                    dayPeriodsSeries.push({
+                      name: '{{item.name}}',
+                      data: {{item.values}}
+                    })  
+                  {% endfor %}
+
+                  Highcharts.chart('dayPeriods', {
+                    chart: {
+                      type: 'bar'
+                    },
+                    title: {
+                      text: 'Visits - Day Of Periods'
+                    },
+                    subtitle: {
+                      text: 'Points of Sale with number of visits greater than 100'
+                    },
+                    xAxis: {
+                      categories: dayPeriodsCategories,
+                      title: {
+                        text: null
+                      }
+                    },
+                    yAxis: {
+                      min: 0,
+                      labels: {
+                        overflow: 'justify'
+                      }
+                    },
+                    tooltip: {
+                      valueSuffix: ' visits'
+                    },
+                    plotOptions: {
+                      bar: {
+                        dataLabels: {
+                          enabled: true
+                        }
+                      }
+                    },
+                    legend: {
+                      layout: 'vertical',
+                      align: 'right',
+                      verticalAlign: 'top',
+                      x: -40,
+                      y: 80,
+                      floating: true,
+                      borderWidth: 1,
+                      backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+                      shadow: true
+                    },
+                    credits: {
+                      enabled: false
+                    },
+                    series: dayPeriodsSeries
+                  });
+                </script>
+              </div>
+            </div>
+          </div>
+
+          <div class="charts card mb-3">
+            <div class="card-header">
+              <i class="fas fa-chart-area"></i>
+              Days Of Weeks
+            </div>
+            <div class="card-body">
               <div id="daysOfWeek">
                 <script>
                   var daysOfWeekCategories = []
                   var daysOfWeekSeries = []
-                    
+
                   {% for key, val in infos.items %}
-                      {% if val.count_visits > 100 %}
-                      daysOfWeekCategories.push('{{key}}')
-                      {% endif %}
+                  {% if val.count_visits > 100 %}
+                  daysOfWeekCategories.push('{{key}}')
+                  {% endif %}
                   {% endfor %}
-                  
+
                   {% for item in series_days_of_week %}
-                    daysOfWeekSeries.push({
-                      name: '{{item.name}}',
-                      data: {{item.values}}
-                    })  
+                  daysOfWeekSeries.push({
+                    name: '{{item.name}}',
+                    data: {{ item.values }}
+                              })
                   {% endfor %}
 
                   Highcharts.chart('daysOfWeek', {

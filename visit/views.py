@@ -26,7 +26,6 @@ def index(request):
         count=Count('user_id')).count()
 
     infos = dict()
-    places = []
     series_days_of_week = [
         {'name': 'Sunday', 'values':[]}, 
         {'name': 'Monday', 'values':[]}, 
@@ -36,6 +35,14 @@ def index(request):
         {'name': 'Friday', 'values':[]}, 
         {'name': 'Saturday', 'values':[]}
     ]
+    series_day_periods = [
+        {'name': 'Manhã', 'values':[]}, 
+        {'name': 'Almoço', 'values':[]}, 
+        {'name': 'Tarde', 'values':[]}, 
+        {'name': 'Noite', 'values':[]},
+        {'name': 'Madrugada', 'values':[]},
+    ]
+
     for visit in visits:
         key = "{}-{}".format(visit.place, visit.place.address.zip_code)
         
@@ -72,12 +79,18 @@ def index(request):
                         if serie['name'] in dayweek:
                             _values = list(dayweek.items())
                             serie['values'].append(_values[0][1])
+                
+                for dayperiod in item.get('count_day_periods'):
+                    for serie in series_day_periods:
+                        if serie['name'] in dayperiod:
+                            _values = list(dayperiod.items())
+                            serie['values'].append(_values[0][1])
 
     context = dict(
         infos=infos
-        ,places=places
         ,count_visits=count_visits_total
         ,count_users=count_users_total
         ,series_days_of_week=series_days_of_week
+        ,series_day_periods=series_day_periods
     )
     return render(request, 'index.html', context)
