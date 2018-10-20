@@ -3,6 +3,7 @@
 Sistema para importação de vendas, tratamento e apresentação dos dados.
 
 
+
 ## Geral
 * Repositório: [github.com/marcuslealsantos/hands](https://github.com/marcuslealsantos/hands/)
 * Python: 3.5
@@ -11,7 +12,7 @@ Sistema para importação de vendas, tratamento e apresentação dos dados.
 
 ## Instalação
 * [Projeto no Jive](https://portalitm.jiveon.com/groups/smart-th)
-* 
+ 
 
 ## Layout
 * https://startbootstrap.com/template-overviews/sb-admin/
