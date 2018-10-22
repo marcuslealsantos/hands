@@ -10,10 +10,6 @@ Sistema para importação de vendas, tratamento e apresentação dos dados.
 * DB:sqlite3 
 
 
-## Instalação
-* [Projeto no Jive](https://portalitm.jiveon.com/groups/smart-th)
- 
-
 ## Layout
 * https://startbootstrap.com/template-overviews/sb-admin/
 * https://www.highcharts.com/

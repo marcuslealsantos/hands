@@ -76,10 +76,24 @@
           <!-- Breadcrumbs-->
           <ol class="breadcrumb">
             <li class="breadcrumb-item">
-              <h4>Point Of Sales - McDonald's <small>(Minas Gerais - BR)</small></h4>
+              <h4>Point Of Sales - McDonald's 
+              <small>(Minas Gerais - BR)</small>
+            </h4>
             </li>
           </ol>
 
+          <div class="row">
+            <form role="form" action="{% url 'dashboard' %}" method="post" class="col-xl-12 col-sm-12 mb-12">
+              {% csrf_token %}
+              <div class="text-right">
+                <button name="reports" class="btn btn-primary" data-toggle="popover" data-trigger="hover" data-placement="top"
+                data-content="Extract visits in XLSX ">
+                  <i class="fa fa-download"></i> Extract Visits
+                </button>
+              </div>
+            </form>
+          </div>
+          
           <!-- Icon Cards-->
           <div class="infos row">
             <div class="col-xl-3 col-sm-6 mb-3">

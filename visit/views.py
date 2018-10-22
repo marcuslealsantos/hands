@@ -7,6 +7,8 @@ from django.core.urlresolvers import reverse
 from django.db.models import Count, Q
 from django.http.response import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
+from openpyxl.workbook.workbook import Workbook
+from openpyxl.writer.excel import save_virtual_workbook
 
 from .models import PointOfSale, StateProvince, Visit
 
@@ -93,4 +95,49 @@ def index(request):
         ,series_days_of_week=series_days_of_week
         ,series_day_periods=series_day_periods
     )
+    if 'reports' in request.POST:
+        wb = Workbook()
+        wb.remove_sheet(wb.worksheets[0])
+        sh = wb.create_sheet('vivists')
+
+        sh.append([
+            '_ID'
+            ,'EUID'
+            ,'ARRIVAL'
+            ,'DEPARTURE'
+            ,'PDV'
+            ,'STREET'
+            ,'POSTCODE'
+            ,'SUBURB'
+            ,'CITY'
+            ,'VISITS'
+            ,'CUSTOMERS'
+            ,'COUNT_DAY_PERIODS'
+            ,'COUNT_DAYS_OF_WEEK'
+        ])
+
+        for item in infos.values():
+            # import pdb ; pdb.set_trace()
+            visit = item.get('visit')
+            sh.append([
+                visit.code
+                ,visit.user_id
+                ,visit.arrival.strftime('%d/%m/%Y')
+                ,visit.departure.strftime('%d/%m/%Y')
+                ,visit.pdv
+                ,visit.place.address.street or ''
+                ,visit.place.address.zip_code or ''
+                ,visit.place.address.suburb or ''
+                ,visit.place.address.city.name
+                ,item.get('count_visits')
+                ,item.get('count_users')
+                ,json.dumps(item.get('count_day_periods'))
+                ,json.dumps(item.get('count_days_of_week'))
+            ])
+
+        response = HttpResponse(save_virtual_workbook(
+            wb), content_type="application/vnd.ms-excel")
+        response['Content-Disposition'] = "attachment; filename=visits.xlsx"
+        return response
+
     return render(request, 'index.html', context)
